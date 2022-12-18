@@ -1,0 +1,17 @@
+{
+  "name": "Keypad for ESPHome",
+  "version": "",
+  "home_assistant_domain": "esphome",
+  "new_install_skip_erase": false,
+  "builds": [
+    {
+      "chipFamily": "ESP32",
+      "parts": [
+        {
+          "path": "keypad-esp32-oled-esp32/keypad-esp32-oled-esp32.bin",
+          "offset": 0
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "chipFamily": "ESP32",
+  "parts": [
+    {
+      "path": "keypad-esp32-oled-esp32/keypad-esp32-oled-esp32.bin",
+      "offset": 0
+    }
+  ]
+}
