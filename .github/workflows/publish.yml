@@ -10,4 +10,4 @@ jobs:
     uses: esphome/workflows/.github/workflows/publish.yml@main
     with:
       files: keypad-esp32.yaml
-      name: Keypad for Alamo/ESPHome
+      name: Keypad for ESPHome
