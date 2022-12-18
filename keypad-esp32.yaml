@@ -1,5 +1,9 @@
+substitutions:
+  name: "keypad-esp32-oled"
+  mqtt_broker: 192.168.1.137
+
 esphome:
-  name: keypad-esp32-oled
+  name: "${name}"
   platform: ESP32
   board: lolin32
   on_boot: 
@@ -9,28 +13,13 @@ esphome:
 
 logger:
 
-api:
-  id: hassio_api
-  encryption:
-    key: "vVDFUuYvG2Bcplw9kbopyhlFmjoZwaVtb8hLEN2LZ1M="
-  services:
-    - service: show_meesage
-      variables:
-        message_string: string
-      then:
-       - globals.set:
-          id: hassio_oled_message
-          value:  !lambda 'return message_string;'
-       - script.execute: oled_show_message_script
-
 mqtt:
   id: mqtt_api
-  broker: 192.168.1.137
-  # port: 8883
+  broker: "${mqtt_broker}"
   discovery: true
   discovery_retain: true
-  username: keypad
-  password: scwhpnezaueq9huweDyeydngkabdhn/s
+  username: !secret mqtt_username
+  password: !secret mqtt_password
   on_message:
      - topic: alarmo/event
        then:
@@ -53,13 +42,8 @@ wifi:
   # power_save_mode: none
   domain: .lan
 
-
 i2c:
   scan: False
-
-time:
-  - platform: homeassistant
-    id: esptime
 
 text_sensor: 
   - platform: version
@@ -112,8 +96,6 @@ text_sensor:
     lambda: |-
       if(id(wireless).is_connected() == false)
         return {"\ueb31"}; // wifi connecting 
-      else if(id(hassio_api).is_connected() == false)
-        return {"\ue16f"}; // api connecting
       else if(id(mqtt_api).is_connected() == false)
         return {"\ue16f"}; // api connecting
       else
@@ -158,11 +140,6 @@ sensor:
     on_value:
       - lambda: |-
           id(wifi_bar_icon).publish_state("wifi_sig_" + to_string(int(x)));
-
-  - platform: homeassistant
-    id: hassio_message
-    name: "HASSIO message"
-    entity_id: sensor.hassio_message 
 
 
 script:
